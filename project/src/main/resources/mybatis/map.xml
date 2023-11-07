@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+	<select id="post_select_all" resultType="com.pro.spring.vo.GuestVO">
+		SELECT * FROM board;
+	</select>
+	
+	<insert id="post_insert" parameterType="com.pro.spring.vo.GuestVO">
+		INSERT INTO board(id,title, password, content, post_date) VALUES(#{id},#{title},#{password},#{content},CURDATE());
+	</insert>
+	
+	<select id="selectBoard" resultType="com.pro.spring.vo.GuestVO" parameterType="int">
+		SELECT post_number,id,title,content,post_date FROM board WHERE post_number = #{post_number};
+	</select>
+	
+	<select id="select_password" resultType="String" parameterType="int">
+		SELECT password FROM board where post_number = #{postNumber};
+	</select>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM board WHERE post_number = #{postNumber};
+	</delete>
+	
+	<select id="loginCheck" resultType="int" parameterType="map">
+		SELECT COUNT(*) FROM user_info WHERE id = #{id} AND password = #{password};
+	</select>	
+</mapper>
