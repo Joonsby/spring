@@ -10,6 +10,7 @@
 	String password = (String) request.getAttribute("password");	
 	out.println("id is : " + (String) session.getAttribute("id"));
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
