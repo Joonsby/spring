@@ -1,8 +1,9 @@
 package com.pro.spring.service;
 
+import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,13 @@ public class GuestService {
 		return boardList;
 	}
 
-	public void insert(GuestVO vo) {
+	public void insert(GuestVO vo) {		
 		guestDao.insert(vo);
 	}
 
-	public boolean check(int post_number, String password) {
+	public boolean check(String id,String password) {				
 		boolean result = false;
-		String pw = guestDao.check(post_number, password);
-		System.out.println("postNumber : " + post_number);
-		System.out.println("password : " + password);
-		System.out.println(pw.equals(password));
+		String pw = guestDao.check(id,password);
 		if (pw.equals(password)) {
 			result = true;
 		} else {
@@ -48,8 +46,7 @@ public class GuestService {
 		return result;
 	}
 
-	public void delete(int postNumber) {
-		System.out.println("service postNumber : " + postNumber);
+	public void delete(int postNumber) {		
 		guestDao.delete(postNumber);
 	}
 }

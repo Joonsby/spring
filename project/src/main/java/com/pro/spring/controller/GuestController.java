@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.pro.spring.service.GuestService;
 import com.pro.spring.vo.GuestVO;
@@ -41,7 +40,7 @@ public class GuestController {
 	public String login() {
 		return "/WEB-INF/web/login.jsp";
 	}
-
+	
 	@RequestMapping("/login_check")
 	public String loginCheck(@RequestParam String id, String password, Model model, HttpSession session) {
 		boolean isValid = guestService.loginCheck(id, password);
@@ -54,30 +53,34 @@ public class GuestController {
 			return "/WEB-INF/web/login_fail.jsp";
 		}		
 	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("id");
+		return "/print";
+	}
 
 	@RequestMapping("/insert")
-	public String insert(@RequestParam String id, String password) {
+	public String insert(Model model) {				
 		return "/WEB-INF/web/insert.jsp";
 	}
 
 	@RequestMapping("/insertDB")
-	public String insertDB(@ModelAttribute GuestVO vo) { // modelAttribute로 submit으로 전송한 데이터를 모두 받아온다. String값은 들어오지 못하고
-															// object 타입만 들어올 수 있다. DTO의 변수명과 insert.jsp의 name과 이름을 맞춰야
-															// 된다.
+	public String insertDB(@ModelAttribute GuestVO vo) {
+		// modelAttribute로 submit으로 전송한 데이터를 모두 받아온다. String값은 들어오지 못하고
+		// object 타입만 들어올 수 있다. DTO의 변수명과 insert.jsp의 name과 이름을 맞춰야 된다.
 		guestService.insert(vo);
 		return "/print";
 	}
 
 	@RequestMapping("/insert_password")
 	public String insertPassword(@RequestParam int post_number) {
-		System.out.println(post_number);
 		return "/WEB-INF/web/password_check.jsp";
 	}
 
 	@RequestMapping("check")
-	public String check(@RequestParam int post_number, String password) {
-		boolean pwSame = guestService.check(post_number, password);
-		System.out.println(pwSame);
+	public String check(@RequestParam int post_number, String id, String password) {
+		boolean pwSame = guestService.check(id,password);
 		if (pwSame) {
 			return "/delete";
 		} else {
@@ -86,9 +89,8 @@ public class GuestController {
 	}
 
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int postNumber) {
-		System.out.println("controller postNumber : " + postNumber);
-		guestService.delete(postNumber);
+	public String delete(@RequestParam int post_number) {
+		guestService.delete(post_number);
 		return "/print";
 	}
 }
