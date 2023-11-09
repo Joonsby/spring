@@ -48,7 +48,7 @@ public class GuestDAO {
 		return boardList;
 	}
 
-	public void insert(GuestVO vo) {
+	public void insert(GuestVO vo) {		
 		sqlSession.insert("post_insert",vo);
 	}
 	
@@ -57,7 +57,7 @@ public class GuestDAO {
 		return userPw;
 	}
 
-	public void delete(int postNumber) {		
+	public void delete(int postNumber) {
 		sqlSession.delete("deletePost",postNumber);
-	}
+	}	
 }

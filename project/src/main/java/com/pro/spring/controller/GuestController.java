@@ -3,9 +3,12 @@ package com.pro.spring.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -61,15 +64,15 @@ public class GuestController {
 	}
 
 	@RequestMapping("/insert")
-	public String insert(Model model) {				
+	public String insert(Model model) {
 		return "/WEB-INF/web/insert.jsp";
 	}
 
 	@RequestMapping("/insertDB")
-	public String insertDB(@ModelAttribute GuestVO vo) {
+	public String insertDB(@ModelAttribute GuestVO vo,HttpServletRequest req) {
 		// modelAttribute로 submit으로 전송한 데이터를 모두 받아온다. String값은 들어오지 못하고
 		// object 타입만 들어올 수 있다. DTO의 변수명과 insert.jsp의 name과 이름을 맞춰야 된다.
-		guestService.insert(vo);
+		guestService.insert(vo,req);
 		return "/print";
 	}
 
@@ -92,5 +95,11 @@ public class GuestController {
 	public String delete(@RequestParam int post_number) {
 		guestService.delete(post_number);
 		return "/print";
+	}
+	
+	@RequestMapping("/download")
+	public String download(HttpServletRequest req, HttpServletResponse res) {
+		guestService.download(req, res);
+		return "download.jsp";
 	}
 }
