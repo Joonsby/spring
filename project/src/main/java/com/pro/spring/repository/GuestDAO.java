@@ -33,6 +33,10 @@ public class GuestDAO {
 		return list;
 	}
 	
+	public void viewsIncrease(int post_number) {
+		sqlSession.insert("views_increase",post_number);
+	}
+	
 	public boolean loginCheck(String id, String password) {
 		Map<String, String> params = new HashMap<>();
 		params.put("id",id);
@@ -44,7 +48,7 @@ public class GuestDAO {
 	}
 	
 	public List<GuestVO> getBoardList(int post_number) {
-		List<GuestVO> boardList = sqlSession.selectList("selectBoard",post_number);		
+		List<GuestVO> boardList = sqlSession.selectList("selectBoard",post_number);
 		return boardList;
 	}
 
@@ -59,5 +63,24 @@ public class GuestDAO {
 
 	public void delete(int postNumber) {
 		sqlSession.delete("deletePost",postNumber);
+	}
+	
+	public void like(int post_number, String id) {
+		GuestVO guestVO = new GuestVO();
+		guestVO.setPost_number(post_number);
+		guestVO.setId(id);		
+		int likeNumber = sqlSession.selectOne("like_count",guestVO);	
+		if(likeNumber == 0) {
+			sqlSession.insert("like_increase",guestVO);
+			sqlSession.insert("insert_likes_table",guestVO);
+		} else if(likeNumber > 0){
+			sqlSession.delete("delete_likes_table",guestVO);
+			sqlSession.insert("like_cancel",guestVO);
+		}
 	}	
+	
+	public String getLikeId(String id) {
+		String likeId = sqlSession.selectOne("likes_table_id",id);		
+		return likeId;
+	}
 }

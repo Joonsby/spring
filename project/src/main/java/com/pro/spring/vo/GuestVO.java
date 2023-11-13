@@ -1,8 +1,21 @@
 package com.pro.spring.vo;
 
 public class GuestVO {
-	int post_number;
-	String id, title, content, post_date, file;
+	int post_number, views, likes;
+	String id, title, content, post_date, file;	
+	
+	public int getLikes() {
+		return likes;
+	}
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+	public int getViews() {
+		return views;
+	}
+	public void setViews(int views) {
+		this.views = views;
+	}
 	public int getPost_number() {
 		return post_number;
 	}

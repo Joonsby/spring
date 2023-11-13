@@ -5,7 +5,9 @@
 <%	
 	List<GuestVO> boardList = (List<GuestVO>) request.getAttribute("boardList");
 	String userId = (String) request.getAttribute("id");
-	String postId = boardList.get(0).getId();	
+	String postId = boardList.get(0).getId();
+	String id = (String) session.getAttribute("id");
+	String likeId = (String) request.getAttribute("likeId");	
 	boolean isTrue = false;
 	if(userId != null){
 		userId = userId.trim();
@@ -33,8 +35,7 @@
 		text-align:center;
 		line-height:30px;
 		border-radius:5px;
-	}
-	
+	}	
 </style>
 <body>
 	<p>게시글 번호 : <%= boardList.get(0).getPost_number() %></p>
@@ -43,7 +44,16 @@
 	<p>내용 : <%= boardList.get(0).getContent() %></p>
 	<p>파일 : <a href="download?file=<%=boardList.get(0).getFile() %>"><%=boardList.get(0).getFile() %></a></p>
 	<p>작성일 : <%=boardList.get(0).getPost_date() %></p>
+	<%		
+  		if(id != null && likeId == null){
+  	%>
+  		<p><a id="like" href="like?post_number=<%=boardList.get(0).getPost_number()%>&id=<%=id%>">좋아요</a></p>
   	<%
+  		} else if (id != null && likeId != null){
+  	%>
+  		<p><a id="like" href="like?post_number=<%=boardList.get(0).getPost_number()%>&id=<%=id%>">좋아요 취소</a></p>
+  	<%
+  		}	
 		if(isTrue){
 	%>
 		<a class="btn" href="insert_password?post_number=<%=boardList.get(0).getPost_number() %>">삭제하기</a> <a class="btn" href="print">뒤로 가기</a>
@@ -53,7 +63,6 @@
 		<a class="btn" href="print?userId=<%=userId %>">뒤로 가기</a>
 	<%
 		}
-	%>	  
-	
+	%>	
 </body>
 </html>

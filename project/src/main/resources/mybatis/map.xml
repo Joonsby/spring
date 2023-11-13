@@ -24,5 +24,41 @@
 	
 	<select id="loginCheck" resultType="int" parameterType="map">
 		SELECT COUNT(*) FROM user_info WHERE id = #{id} AND password = #{password};
+	</select>
+	
+	<insert id="views_increase" parameterType="int">
+		UPDATE board SET views = views + 1 WHERE post_number = #{post_number};
+	</insert>
+	
+	<select id="like_count" resultType="int" parameterType="com.pro.spring.vo.GuestVO">
+		SELECT COUNT(*) FROM likes_table WHERE post_number = #{post_number} AND id = #{id};
+	</select>
+	
+	<insert id="like_increase" parameterType="com.pro.spring.vo.GuestVO">
+		UPDATE board 
+		SET likes = likes + 1 
+		WHERE post_number = #{post_number} AND NOT EXISTS (
+		    SELECT 1 FROM likes_table WHERE id = #{id}
+		);
+	</insert>
+	
+	<insert id="insert_likes_table" parameterType="com.pro.spring.vo.GuestVO">
+		INSERT INTO likes_table VALUES (#{post_number},#{id});
+	</insert>
+	
+	<delete id="delete_likes_table" parameterType="com.pro.spring.vo.GuestVO">
+		DELETE FROM likes_table WHERE post_number = #{post_number} AND id = #{id};
+	</delete>
+	
+	<insert id="like_cancel" parameterType="com.pro.spring.vo.GuestVO">
+		UPDATE board 
+		SET likes = likes - 1 
+		WHERE post_number = #{post_number} AND NOT EXISTS (
+		    SELECT 1 FROM likes_table WHERE id = #{id}
+		);
+	</insert>
+	
+	<select id="likes_table_id" resultType="String" parameterType="String">
+		SELECT id FROM likes_table WHERE id = #{id};
 	</select>	
 </mapper>

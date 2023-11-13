@@ -98,7 +98,9 @@ th {
 				<th>아이디</th>
 				<th>제목</th>
 				<th>내용</th>
-				<th>작성일</th>				
+				<th>작성일</th>
+				<th>조회수</th>
+				<th>좋아요</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -109,20 +111,22 @@ th {
 					out.println("<td>" + list.get(i).getId() + "</td>");
 					out.println("<td>" + list.get(i).getTitle() + "</td>");
 					if(id != null){
-						out.println("<td><a href='board?post_number=" + list.get(i).getPost_number() + "&id=" + id + "'>" + list.get(i).getContent() + "</a></td>");						
-					} else{						
-						out.println("<td><a href='board?post_number=" + list.get(i).getPost_number() + "'>" + list.get(i).getContent() + "</a></td>");						
-					}					
-					out.println("<td>" + list.get(i).getPost_date() + "</td>");					
+						out.println("<td><a href='board?post_number=" + list.get(i).getPost_number() + "&id=" + id + "'>" + list.get(i).getContent() + "</a></td>");
+					} else{
+						out.println("<td><a href='board?post_number=" + list.get(i).getPost_number() + "'>" + list.get(i).getContent() + "</a></td>");
+					}
+					out.println("<td>" + list.get(i).getPost_date() + "</td>");
+					out.println("<td>" + list.get(i).getViews() + "</td>");
+					out.println("<td>" + list.get(i).getLikes() + "</td>");
 				}				
 			%>
 		</tbody>
-	</table>	
+	</table>
 	
 	<%
 		if(id != null){
-			out.println("<a id='post' href='insert?id=" + id + "'>게시판 등록하기</a>");			
-			out.println("<a id='logout' href='logout'>로그 아웃하기</a>");		
+			out.println("<a id='post' href='insert?id=" + id + "'>게시판 등록하기</a>");
+			out.println("<a id='logout' href='logout'>로그 아웃하기</a>");
 		} else{
 			out.println("<a id='post' href='login'>로그인 하기</a>");
 		}

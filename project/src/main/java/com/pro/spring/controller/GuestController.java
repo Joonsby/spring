@@ -34,8 +34,11 @@ public class GuestController {
 	@RequestMapping("/board")
 	public String board(@RequestParam int post_number, Model model, String id) {
 		List<GuestVO> boardList = guestService.getBoardList(post_number);
+		guestService.viewsIncrease(post_number);
+		String likeId = guestService.getLikeId(id);
 		model.addAttribute("id", id);
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("likeId",likeId);
 		return "/WEB-INF/web/board.jsp";
 	}
 
@@ -100,6 +103,14 @@ public class GuestController {
 	@RequestMapping("/download")
 	public String download(HttpServletRequest req, HttpServletResponse res) {
 		guestService.download(req, res);
-		return "download.jsp";
+		return "/board";
+	}
+	
+	@RequestMapping("/like")
+	public String like(Model model,@RequestParam int post_number, String id) {
+		String likeId = guestService.getLikeId(id);
+		guestService.like(post_number, id);		
+		model.addAttribute("likeId",likeId);
+		return "/board";
 	}
 }

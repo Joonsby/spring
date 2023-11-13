@@ -1,8 +1,6 @@
 package com.pro.spring.service;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.Enumeration;
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -30,6 +27,10 @@ public class GuestService {
 	public List<GuestVO> getList() throws SQLException {
 		List<GuestVO> list = guestDao.selectAll();
 		return list;
+	}
+	
+	public void viewsIncrease(int post_number) {
+		guestDao.viewsIncrease(post_number);
 	}
 
 	public boolean loginCheck(String id, String password) {
@@ -96,8 +97,7 @@ public class GuestService {
 		byte b[] = new byte[4096];
 		try {
 			FileInputStream in = new FileInputStream(sFilePath);
-			String sMimeType = req.getServletContext().getMimeType(sFilePath);
-			System.out.println("sMimeType>>>" + sMimeType);
+			String sMimeType = req.getServletContext().getMimeType(sFilePath);			
 			
 			if (sMimeType == null) {
 				sMimeType = "application/octet-stream";
@@ -123,10 +123,18 @@ public class GuestService {
 			}
 			out2.flush();
 			out2.close();
-			in.close();
-			System.out.println("complete");
+			in.close();			
 		} catch(Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}			
+	}
+	
+	public void like(int post_number, String id) {
+		guestDao.like(post_number, id);
+	}
+	
+	public String getLikeId(String id) {
+		String likeId = guestDao.getLikeId(id);
+		return likeId;
 	}
 }
